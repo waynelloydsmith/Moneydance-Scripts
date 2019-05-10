@@ -1,4 +1,4 @@
-# Moneydance-Scripts 
+# Moneydance-stockglance75.py
 This jython script is run by using the monydance->Window->"Show MoneyBot Console"
 Then "Open Script" pick stockglance75.py then pick "run".
 The enhancment StockGlance75 has over StockGlance is that it shows you which
