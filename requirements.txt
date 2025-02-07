@@ -1,0 +1,24 @@
+In order to use these scripts you need to do a few things.
+sign up with stockwatch
+add the symbol "fake" to all of your investment accounts
+create a TEST Investment account to play with
+add all your symbols to the TEST account
+after you import Investment Account transactions reconcile the cash balance against the banks.
+search for any "fake" transactions in the account.
+Because your importing .csv files the stupid idea of altering the dates AND times based on your time zone will not be a problem.
+This only happens when you import quicken .qfx files and drives me nuts. (makes reconciling difficult and time consuming)
+You need to create some directories for the scripts to be happy
+/opt/moneydance/scripts
+/opt/moneydance/scripts/tmp
+/opt/moneydance/scripts/tmp/StockwatchDay
+/opt/moneydance/scripts/tmp/Done
+/opt/moneydance/scripts/tmp/Stockwatch
+/opt/moneydance/scripts/tmp/StockwatchPortfolio  ... not used at the moment
+/opt/moneydance/scripts/tmp/junk                 ... optional
+/opt/moneydance/scripts/retired                  ... optional
+/opt/moneydance/scripts/jython270 ... if you want to use the jython270 extension
+/opt/moneydance/scripts/backup                   ... optional
+
+
+
+
