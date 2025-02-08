@@ -1,5 +1,4 @@
 BMO-Inv-new.py:             uses SymbolTable to check if the stock is not on the TSX maybe on NYSE or NEO etc
-ScotiaInvnew.py:            uses StockwatchSymbols to check for mutual fund and SymbolTable to check if its not on the TSX
 updateDaylyStockwatch.py:   uses StockwatchSymbols and StockwatchIndexs and StockPriceHistoryStockwatch
 updateHistoryStockwatch.py: uses StockwatchSymbols to check for mutual fund
 
