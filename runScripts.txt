@@ -1,20 +1,2 @@
-A Road Map.
 
-first pick...Misc Scripts
-  mMiscData = ["StockGlance75.py","jython_info.py" ,"test.py","dev.py"]
-  The Misc scripts are only one layer deep
-second pick .. Run Stockwatch Update Scripts
-  sStockwatchData = ["updateDaylyStockwatch.py" ,"updateHistoryStockwatch.py"]
-  again only one layer deep
-third pick "import ~/Downloads ......" BMO-Inv-new.py
-    opens a second level with a list of accounts to choose from.
-    BMOAccounts = ['BMO RRSP TEST',
-               'Rita RRSP 21830908',
-               'Rita TFSA 23317954',
-	       'Wayne RRSP 21833408',
-	       'LIF 21298195',
-	       'Wayne TFSA 23318002']
-    The account name is passed to BMO-Inv-new as an Argument.
-
-....................................................................................................end of runScripts.py
 
