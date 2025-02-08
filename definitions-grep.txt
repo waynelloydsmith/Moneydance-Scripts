@@ -10,7 +10,3 @@ StockPriceHistoryStockwatch is the big dictionary of all the stocks I'm tracking
 SymbolTable                 is a dictionary of Symbols that are not on the TSX like the NYSE , Venture Exchange, NEO
                             .. the second entry has to be the exchange that stockwatch uses for them
 
-*Stock-fetchhtml-Stockwatch.py:   uses StockPriceHistoryStockwatch .... table  .. with no execfile()??
-*Stock-html2csv-Stockwatch.py:    uses StockPriceHistoryStockwatch.
-* these scripts were dropped .. scrape-ing pages on stockwatch produced some complaints from their web master
-  also getting the current price isn't much use . If your trading you need real time price . I use the trading interface for this.
