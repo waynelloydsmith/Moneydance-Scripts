@@ -13,5 +13,5 @@ import sys
 sys.path.append(r'/opt/moneydance/scripts/')
 ....................................................................
 to the stockglance75.py script file or use another startup script to set these up .
-Also need to update the days prices with updateDaylyStockwarch.py or it may crash.
+Yoy also need to update the days prices with updateDaylyStockwarch.py or it may crash.
 
