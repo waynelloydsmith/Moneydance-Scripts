@@ -7,9 +7,10 @@
 import sys
 
 
-# the import data files should be down loaded from www.stockwatch.com and be placed in the directory /opt/moneydance/scripts/tmp/StockwatchDay
+# the import data files could be down loaded from www.stockwatch.com and be placed in the directory /opt/moneydance/scripts/tmp/StockwatchDay
 # this program processes all the .csv files in the StockwatchDay directory and moves them to /opt/moneydance/scripts/tmp/Done
 # you could down load them manually but fetchhtmlDaylyStockwatch.py and fetchhtmlDaylyStockwatchIndexs.py does it for you
+# just pick it on the runSripts GUI
 # to do it manually
 # goto www.stockwatch.com and click on quotes->download quotes-> Date -> select Exchange -> select csv format -> submit
 # you must have a stockwatch account and be logged in
