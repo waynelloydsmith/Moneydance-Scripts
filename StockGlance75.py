@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: utf8
 """ j2py StockGlance72.java >> StockGlance72.py """
 #  StockGlance.java
 # 
@@ -239,6 +240,7 @@ class StockGlance75():
                     entry.add(accounts.get(curr))
                     data.add(entry)
                     self.rowCurrencies.add(curr)
+#                    print curr.getTickerSymbol(),balance # if balance is zero it should not be displayed on StockGlance
 #                    StockGlance75.rowCurrencies.add(curr)
         self.data = data            
 #        StockGlance75.data = data            
