@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 global UserNamme
-UserName = "waynelloydsmith"
+UserName = "username"
 global Password
-PassWord = "Escape2001"
+PassWord = "password"
 
