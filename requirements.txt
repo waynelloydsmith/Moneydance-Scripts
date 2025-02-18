@@ -1,6 +1,6 @@
 In order to use these scripts you need to do a few things.
 sign up with stockwatch
-add the symbol "fake" to all of your investment accounts
+add the symbol "FAKE-T" to all of your investment accounts
 create a TEST Investment account to play with
 add all your symbols to the TEST account
 after you import Investment Account transactions reconcile the cash balance against the banks.
