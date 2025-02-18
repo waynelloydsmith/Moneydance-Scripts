@@ -8,8 +8,8 @@ class ScotiaInvnew:
   import sys
   from time import mktime , localtime ,strftime
 
-  sys.stdout = open ('/dev/pts/3', 'w') # when this cript is started by ScotiaPicker.py stdout gets messed up (a java swing problem)
-  sys.stderr = open ('/dev/pts/3', 'w') # this doesn't seem to work .. need to check the moneydance console
+  #sys.stdout = open ('/dev/pts/3', 'w') # when this cript is started by ScotiaPicker.py stdout gets messed up (a java swing problem)
+  #sys.stderr = open ('/dev/pts/3', 'w') # this doesn't seem to work .. need to check the moneydance console
   global lineNo
   def lineNo():  return (str(sys._getframe(1).f_lineno) + ' ')
 
