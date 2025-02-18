@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-global UserNamme
+global UserName
 UserName = "username"
-global Password
+global PassWord
 PassWord = "password"
 
