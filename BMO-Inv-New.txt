@@ -3,12 +3,12 @@ It is a mess.
 There is no list of all the possible Actions that can be thown at you in the csv files you download.
 As a result every time you hit a new Action you have to edit this script.
 As the years have gone by I think I've seen most of them.
-I added some code today to fake a Dividend in this version when you hit an unseen Action
+I added some code today to fake a Short in this version when you hit an unseen Action
 Instead of raising an exception and stopping the import half way through.
 The processTxn function is now recursive. I hope it doesn't run away.
 The word "Fake" is appended to the memo field so you can track them down later and fix the script later.
 Another problem is that some companies leave the Action blank so you have to guess what it is.
-Sometimes the ticker is missing. So I put in a fake one.
+Sometimes the ticker is missing. So I put in a fake one FAKE-T .
 So use the moneydance search function to look for 'fake' or 'Fake' after a large import.
 Also check that the cash balances reconcile.
 The time stamp in the memo field alloes you to import 50 tranaactions, then search for them and then delete them.
