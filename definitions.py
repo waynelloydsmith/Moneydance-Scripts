@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # coding: utf8
+# version 2/19/2025
+
 from __future__ import print_function
 from __future__ import absolute_import
 #
@@ -11,9 +13,9 @@ class definitions:
 
    
 # just list the symbols that are not on the TSX
-# used by BMO-Inv-new.py and ScotiaInvnew.py
+# used by BMO-Inv-new.py and Scotia-Inv-new.py
 # its a python dictionary
-   SymbolTable = {  
+   ExchangeTable = {
    'KMB-T':'KMB-N', # Kimberly Clark is on the New York Exchange
    'MHYB-T':'MHYB-NEO',
    'VST-T':'VST-N'     # Vista Energy Corp
@@ -31,9 +33,9 @@ class definitions:
 # TML202 is recognized by many web sites but BIF*CDN seems to be only used by stockwatch 
 # used to look up the fundserv ticker symbol given the name used by www.stockwatch.com or vice versa
 # mutual funds only.. used by updateHistoryStockwatch.py and updateDaylyStockwatch.py
-# I don't use mutual funds anymore so this isn't used much
+# still used by Scotia-Inv-new.py for historical reasons ... not used by BMO-Inv-new.py
 # its a python dictionary
-   StockwatchSymbols = { 
+   StockwatchMutualFundSymbols = {
    'TML202-T':'BIF*CDN', # Franklin Bissett Canadian Equity Fund Series A-F     did great
    'MFC738-T':'CUN*SSC', # Mackenzie Cundill Canadian Security Fund A - FE      did great
    'BIP151-T':'BRN*GLO', # Brandes Global Equity Fund Series A - FE             did ok
@@ -99,10 +101,10 @@ class definitions:
    }
 
    
-# stockwatch does NEO and has both the date and time.
+# stockwatch shows TSX, NEO ATS, Omega, Pure, Chi-X, CX2, CXD, TriAct, CS2 and has both the date and time.
 # Does Canadian Mutual Funds and Stocks. Has USA stocks and funds too. 
 # also has international currency/exchange rates.
-# its used by updateDaylyStockwatch.py and was used by Stock-fetchhtml-Stockwatch.py
+# its used by updateDaylyStockwatch.py .. if your ticker isn't in this table the stockwatch close price will not get updated '
 # its a python dictionary
 #################################################################################################################the list
    StockPriceHistoryStockwatch = { 
