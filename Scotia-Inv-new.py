@@ -16,6 +16,7 @@ class ScotiaInvnew:
 
   execfile("/opt/moneydance/scripts/definitions.py")
   execfile("AccountNames.py") # defines accountNames .. the Bank Investment accounts
+  execfile("BondTable.py") # defines BondTable
 
 #  csvfile = "/home/wayne/ScotiaBank/transactionHistory.csv" # this was the old default location for www.ScotiaBank.com file name
 #  csvfile = "/home/wayne/Downloads/transactionHistory.csv" # this is where firefox puts them now
@@ -28,6 +29,7 @@ class ScotiaInvnew:
 
 
 #  list of BONDS & GIC's .. alternate way of doing the Bond Table
+# a dictionary of lists .. the items in the list don't have names '
 #  BondTable = dict({  a dictionary of lists
 #    '5VJYFL0':['ZAG BANK MONTHLY INTEREST GIC',2.95,'2023-03-15',0,0],    
 #    '13321LAH1':['CAMECO CORPORATION',3.75,'2022-11-14',246.58,24.99],      
@@ -37,18 +39,21 @@ class ScotiaInvnew:
 #    '51925DBP0':['LAURENTIAN BANK OF CANADA SENIOR DEPOSIT NOTES',3.0,'2022-09-12',3.29,24.99]    
 #    })
 
-  BondTable = dict({ # a dictionary of dictionaries
-#    '5VJYFL0':{'desc':'ZAG BANK MONTHLY INTEREST GIC','coupon':2.95,'date':'2023-03-15','accrued':0,'fee':0},
-    '5VJYFL0':{'desc':'DESJARDINS TRUST INC MONTHLY INTEREST GIC','coupon':2.95,'date':'2023-03-15','accrued':0,'fee':0},
-    '13321LAH1':{'desc':'CAMECO CORPORATION','coupon':3.75,'date':'2022-11-14','accrued':246.58,'fee':24.99},      
-    '136765BA1':{'desc':'CANADIAN WESTERN BANK SR UNSECURED','coupon':2.924,'date':'2022-12-15','accrued':142.60,'fee':24.99},    
-    '11257ZAC3':{'desc':'BROOKFIELD ASSET MGMT INC MED TERM NTS','coupon':4.54,'date':'2023-03-31','accrued':410.47,'fee':24.99},    
-    '303901AZ5':{'desc':'FAIRFAX FINANCIAL HLDS LTD SR UNSECURED','coupon':4.25,'date':'2027-12-06','accrued':232.88,'fee':24.99},    
-    '51925DBP0':{'desc':'LAURENTIAN BANK OF CANADA SENIOR DEPOSIT NOTES','coupon':3.0,'date':'2022-09-12','accrued':3.29,'fee':24.99},
-    '5W62553'  :{'desc':'BANK OF MONTREAL ANNUAL INTEREST GIC DUE 11/15/2024  INT  2.350% CPN INT   ON    5000 BND REC 11/14/24 PAY 11/15/24' }
-    })
+# the Bond Table has been moved to its own script BondTable.py
+# a dictionary of dictionaries  .. each item gets a nice name
+#  BondTable = dict({
+##    '5VJYFL0':{'desc':'ZAG BANK MONTHLY INTEREST GIC','coupon':2.95,'date':'2023-03-15','accrued':0,'fee':0},
+#    '5VJYFL0':{'desc':'DESJARDINS TRUST INC MONTHLY INTEREST GIC','coupon':2.95,'date':'2023-03-15','accrued':0,'fee':0},
+#    '13321LAH1':{'desc':'CAMECO CORPORATION','coupon':3.75,'date':'2022-11-14','accrued':246.58,'fee':24.99},
+#    '136765BA1':{'desc':'CANADIAN WESTERN BANK SR UNSECURED','coupon':2.924,'date':'2022-12-15','accrued':142.60,'fee':24.99},
+#    '11257ZAC3':{'desc':'BROOKFIELD ASSET MGMT INC MED TERM NTS','coupon':4.54,'date':'2023-03-31','accrued':410.47,'fee':24.99},
+#    '303901AZ5':{'desc':'FAIRFAX FINANCIAL HLDS LTD SR UNSECURED','coupon':4.25,'date':'2027-12-06','accrued':232.88,'fee':24.99},
+#    '51925DBP0':{'desc':'LAURENTIAN BANK OF CANADA SENIOR DEPOSIT NOTES','coupon':3.0,'date':'2022-09-12','accrued':3.29,'fee':24.99},
+#    '5W62553'  :{'desc':'BANK OF MONTREAL ANNUAL INTEREST GIC DUE 11/15/2024  INT  2.350% CPN INT   ON    5000 BND REC 11/14/24 PAY 11/15/24' }
+#    })
 
-  PreferedShareTable = dict({ # a dictionary of dictionaries
+
+  PreferedShareTable = dict({ # a dictionary of dictionaries  .. not used
     'CU-PR-F-T':{'desc':'CDN UTIL 4.5% CUM RDM CU.PR.F','type':'Fixed Cumulative','coupon':4.5,'issue-date':'2013-03-19','series':'CC','first-redem-date':'2018-06-1','first-redem-price':26}, # redemption price drops .25 per year until it reaches $25 on june 1 2022  
     'GWO-PR-S-T':{'desc':'Great West Life Preferred GWO.PR.S','type':'Fixed Non Cumulative','coupon':5.2,'issue-date':'2014-05-22','series':'S','first-redem-date':'2019-06-30','first-redem-price':26}   # redemption price drops .25 per year until it reaches $25 on june 30 2023   
     })
@@ -64,117 +69,21 @@ class ScotiaInvnew:
 # Scotia-Inv.py select-Scotiabank-Inv-file2.py are no longer used . The csv file imported is always /home/wayne/ScotiaBank/transactionHistory.csv
 
 
-  DescTable = {  
-   'TML202':'FRANKLIN BISSETT CDN EQUITY FD (202)',
-   'MFC738':'CUNDILL CANADIAN SECURITY FUND SER C (738)',
-   'BIP151':'BRANDES GLOBAL EQUITY FUND (151)',
-   'FID281':'FIDELITY CANADIAN ASSET ALLOCATION FUND ISC (281)',
-   'BNS344':'SCOTIA SELECTED MAXIMUM GROWTH PORTFOLIO (344)',
-   'BNS361':'SCOTIA MORTGAGE INCOME FUND (361)',
-   'BNS741':'SCOTIA SELECTED BALANCED INCOME & GROWTH PORTFOLIO (741)',
-   'BNS357':'SCOTIA MONEY MARKET FUND (357)',
-   'BMO146':'BMO DIVIDEND FUND (146)',                                  
-   'BMO471':'BMO Select Trust Fixed Income (471)',                                  
-   'GOC309':'CANOE CANADIAN ASSET ALLOCATION CLASS SERIES Z(309)',   
-   'AI-T':'Atrium Mortgage Investment Corporation', 
-   'ARX-T':'ARC RESOURCES LTD',   
-   'ABX-T':'BARRICK GOLD',    
-   'AD-T':'ALARIS ROYALTY CORP',
-   'ALA-T':'ALTAGAS LTD', 
-   'APR-UN-T':'AUTOMOTIVE PROPERTIES RL EST INVEST TRUST (2015)', 
-   'AW-UN-T':'A&W Revenue Royalties Income Fund', 
-   'AX-UN-T':'Artis Real Estate Investment Trust', 
-   'BR-T':'BIG ROCK BREWERY INC',
-   'BTB-UN-T':'BTB REAL ESTATE INVESTMENT TRUST',
-   'BNE-T':'BONTERRA ENERGY CORP',
-   'BPF-UN-T':'BOSTON PIZZA ROYALTIES INCOME FUND TRUST',
-   'CCO-T':'CAMECO CORP',   
-   'CRR-UN-T':'Crombie Real Estate Investment Trust',
-   'CNR-T':'CANADIAN NATIONAL RAILWAY CO',
-   'CTF-UN-T':'CITADEL INCOME FUND',
-   'CIQ-UN-T':'CANADIAN HIGH INCOME EQUITY FUND',
-   'CJR-B-T':'CORUS ENTERTAINMENT INC',  
-   'CU-PR-F-T':'CDN UTIL 4.5% CUM RDM SECND PR',
-   'DS-T':'Quadravest Dividend Select 15 Canadian', # Quadvest
-   'DR-T':'MEDICAL FACILITIES CORPORATION',
-   'EIT-UN-T':'CANOE EIT INCOME FD',
-   'EIF-T':'EXCHANGE INC CORP',
-   'ENF-T':'ENBRIDGE INCOME FD HLDGS',
-   'EXE-T':'Extendicare Inc',
-   'FTS-T':'FORTIS INC',
-   'FC-T':'FIRM CAPITAL MORTGAGE INV. CORP',   
-   'FCD-UN-X':'Firm Capital Property Trust',           # its on the TSX venture exchange ?
-   'FFN-PR-A-T':'Quadravest North American Financial 15 Split Corp',
-   'FFI-UN-T':'FLAHERTY & CRUMRINE INVESTMENT',
-   'FTN-PR-A-T':'Quadravest Financial 15 Split Corp US and Canada',
-   'FN-T':'First National Financial Corp',   
-   'FIG-T':'First Asset Investment Grade Bond ETF',
-   'GWO-PR-S-T':'GREAT-WEST LIFECO INC PR',
-   'GDG-UN-T':'GLOBAL DIVIDEND GROWERS INCOME FUND',
-   'G-T':'GOLDCORP INC',                               # goldcorp us dollars
-   'HR-UN-T':'H&R REAL ESTATE INVESTMENT TRUST STAPLED',
-   'H-T':'HYDRO ONE',
-   'HHL-T':'HEALTHCARE LEADERS INCOME ETF',
-   'IDR-UN-T':'REIT INDEXPLUS INC FD TR UNITS',
-   'IDR-T':'MIDDLEFIELD REIT INDEXPLUS ETF UNIT',
-   'IPL-T':'INTER PIPELINE LTD',
-   'INC-UN-T':'INCOME FINANCIAL TRUST',
-   'JE-T':'JUST ENERGY GROUP INC',
-   'K-T':'KINROSS',
-   'KMB-N':'KIMBERLY CLARK',                           # Kimberly Clark on New York Exchange
-   'KEG-UN-T':'THE KEG ROYALTIES INCOME FUND',
-   'KWH-UN-T':'CRIUS ENERGY TRUST',
-   'LFE-PR-B-T':'Quadravest 4 Canada Life Companies Split Corp',   
-   'MFR-UN-T':'MANULIFE FLOATING RATE SR LN FD',
-   'MFT-T':'Mackenzie Floating Rate Income ETF',
-   'MHYB-NEO':'MACKENZIE GLBL HIGH YLD ETF',  
-   'MID-UN-T':'MINT INCOME FUND TR',
-   'MUB-T':'Mackenzie Unconstrained Bond ETF',
-   'MR-UN-T':'Melcor Real Estate Investment Trust',      
-   'MRT-UN-T':'MORGUARD REAL ESTATE INVESTMENT TRUST',   
-   'MMP-UN-T':'PRECIOUS METALS AND MINING TRUST',
-   'NPF-UN-T':'NORTH AMERICAN PREFERRED SHARE FUND',
-   'NWH-UN-T':'NORTHWEST HEALTHCARE PROPERTIES REIT',
-   'OCV-UN-T':'YIELD ADVANTAGED CONV DEB FUNDS',
-   'ONR-UN-T':'ONEREIT TR UNIT',
-   'PEY-T':'Peyto Exploration & Development Corp',   
-   'PCD-UN-T':'MiddleField PATHFINDER INCOME FUND',   
-   'PGI-UN-T':'PIMCO GLOBAL INCOME OPPORTUNITIES FD',
-   'PLZ-UN-T':'PLAZA RETAIL REIT TRUST',
-   'PPL-T':'Pembina Pipeline Corporation',
-   'PR-T':'LYSANDER-SLATER PREFERRED SHARE ACTIVE ETF',   
-   'PGF-T':'PENGROWTH ENERGY CORPORATION',
-   'PKI-T':'PARKLAND FUEL CORPORATION', # was PKI.UN jan 7 2011
-   'REI-UN-T':'RIOCAN REAL ESTATE INVESTMENT TRUST',   
-   'REF-UN-T':'CANADIAN REAL ESTATE INVESTMENT TRUST',   
-   'RIT-T':'First Asset Canadian REIT ETF',   
-   'RBN-UN-T':'Brompton BLUE RIBBON INCOME FUND TRUST',
-   'SCW-UN-T':'Canso Select Opportunities Fund',
-   'SIN-UN-T':'SCITI TRUST',
-   'SJR-B-T':'SHAW COMMUNICATIONS INC. CL B',
-   'SKG-UN-T':'SKYLON GROWTH & INCOME TRUST',   
-   'SPB-T':'SUPERIOR PLUS CORP',   
-   'S-T':'SHERRITT INTERNATIONAL CORP',   
-   'SRU-UN-T':'SMARTCENTRES RL EST INVEST TR',
-   'SRV-UN-T':'SIR ROYALTY INCOME FUND',
-   'SSF-UN-T':'Brompton SYM FLOATING RTE SENIOR LOAN FND',
-   'SU-T':'SUNCORE',
-   'TECK-A-T':'Teck Resources Limited Class A Multiple Voting Shares',
-   'T-T':'TELUS',
-   'TNT-UN-T':'TRUE NORTH COMMERCIAL RL EST INVEST TR',
-   'TF-T':'Timber Creek Financial Corp',
-   'TA-T':'TRANSALTA',
-   'UTE-UN-T':'CDN UTIL & TELECOM INC FD TR U',
-   'VET-T':'VERMILLION ENERGY INC CORP',
-   'WJA-T':'WESTJET',
-   'YP-UN-T':'YIELDPLUS INCOME FUND TRUST',                             # merged into MID.UN and delisted March 24 2017
-   'ZWE-T':'BMO Europe High Dividend Covered Call Hedged to CAD ETF',
-   'ZWU-T':'BMO Covered Call Utilities ETF'
-  
-   }
+#  DescTable = {
+#   'TML202':'FRANKLIN BISSETT CDN EQUITY FD (202)',
+#   'MFC738':'CUNDILL CANADIAN SECURITY FUND SER C (738)',
+#   'BIP151':'BRANDES GLOBAL EQUITY FUND (151)',
+#   'FID281':'FIDELITY CANADIAN ASSET ALLOCATION FUND ISC (281)',
+#   'BNS344':'SCOTIA SELECTED MAXIMUM GROWTH PORTFOLIO (344)',
+#   'BNS361':'SCOTIA MORTGAGE INCOME FUND (361)',
+#   'BNS741':'SCOTIA SELECTED BALANCED INCOME & GROWTH PORTFOLIO (741)',
+#   'BNS357':'SCOTIA MONEY MARKET FUND (357)',
+#   'BMO146':'BMO DIVIDEND FUND (146)',
+#   'BMO471':'BMO Select Trust Fixed Income (471)'
+#   }
 
 
-
+# given a description try to find the ticker that go with it.
   def lookupBondTicker(description,table): 
     tickerSym = None
     description = description[:14] # only checking 14 characters
@@ -183,7 +92,7 @@ class ScotiaInvnew:
       desc = table[ticker]['desc']
       if len(desc) <= 0: break
       if desc.count(description) > 0:
-        print lineNo() + "found it in the bond table", ticker
+        print lineNo() + "lookupBond found it in the bond table", ticker
         tickerSym = ticker
         break
     return tickerSym
@@ -203,7 +112,7 @@ class ScotiaInvnew:
 	  tickerSym = fundsym
 #	print "found tickerSym=",tickerSym
 	  break
-#    if tickerSym == None:	
+#    if tickerSym is None:
 #	print "Ticker symbol Look up failed ------------------------.  TXN"
     return tickerSym
 
@@ -245,9 +154,10 @@ class ScotiaInvnew:
       dd = '0' + dd
     return int(dates[2] + mm + dd)
 
-  def mdQty(qtyStr, decimals):
+# found where the extra CR was coming from ... the amount was the last field in the csv I forgot to pull a CR at the end of the file we could strip the out here
+  def mdQty(qtyStr, decimals): # it appears to take a number like (5000.00) and change it to -500000 if decimals are 2
     l = len(qtyStr)
-#   print 'qtyStr l decimals',qtyStr,l,decimals
+#    print 'qtyStr l decimals',qtyStr,l,decimals # 5000 6 2
     if l == 0:
       return 0
     neg = ''
@@ -260,7 +170,7 @@ class ScotiaInvnew:
       i = i + 1
       if c == '(':
 	neg = '-'
-      elif c == '$' or c == ',' or c == ')' or c == '\n':
+      elif c == '$' or c == ',' or c == ')' or c == '\n' or c == '\r':  # it looks for LF new line 0x0a .. but not \r CR 0x0d added \r
 	pass
       elif c == '.':
 	frac = qtyStr[i:i+decimals]
@@ -269,8 +179,8 @@ class ScotiaInvnew:
 	  if i >= len(frac):
 	    break
 	  c = frac[i]
-	  if c == ')' or c == '\n':
-#	  	print "frac c=)or \\n" , c
+	  if c == ')' or c == '\n' or c == '\r': # added /r
+#            print "frac c=)or \\n" , c
 	    newfrac = newfrac + '0'
 	  else:
 #	  	print "frac c=",c
@@ -282,10 +192,24 @@ class ScotiaInvnew:
 #      	print 'mdQty md=' , md
     while len(newfrac) < decimals:
       newfrac = newfrac + '0'         
-#  	print 'neg', neg # sign
-#  print 'md' , md 
-#  print 'newfrac',newfrac  
-    x = long(neg + md + newfrac)
+#    print 'neg', neg # sign
+#    print 'md' , md
+#    print 'newfrac',newfrac
+#    print neg + md + newfrac  # These all look clean ???? will try scubbing the string
+#    newString = neg + md + newfrac
+#    newString = newString.strip()
+#    print newString
+#    print ":".join("{:02x}".format(ord(c)) for c in newString) # worked 35:30:30:30:0d:30:30  we got an extra CR carriage return from some where end of md ?
+#    print ":".join("{:02x}".format(ord(c)) for c in "500000")  # worked 35:30:30:30:30:30
+#    print "md"
+#    print ":".join("{:02x}".format(ord(c)) for c in md )  # 35:30:30:30:0d yes its in md
+#    print "qtyStr"
+#    print ":".join("{:02x}".format(ord(c)) for c in qtyStr ) # 35:30:30:30:0d:0a  both CR and LF are fed to us
+    x = long(neg + md + newfrac) #ValueError: invalid literal for long() with base 10: '500000' ...  makes no sense
+#    x = long(newString) # failed
+#    x = long(float(newString)) # ValueError: invalid literal for float: 500000
+#    x = long(float(str(newString))) ValueError: invalid literal for float: 500000
+#    x = long("500000")  # this worked ???????????????????????????????????????????????????????????????
 #    print 'mdQty returning integer=',x
     return x
   
@@ -306,7 +230,7 @@ class ScotiaInvnew:
     import com.infinitekind.moneydance.model.AccountBook
  
  # below makes sure currencies.getCurrencyByTickerSymbol is never called with tickerSym = None .. it blows up with a Java Null pointer error
-    if tickerSym == None:
+    if tickerSym is None:
       return None
     
  #   Rootaccount2 = getRootAccount() # test
@@ -581,7 +505,7 @@ class ScotiaInvnew:
       Partxn.addSplit(incSplit)                  
     elif action == 'MiscInc':    # must have security to go with this income use FAKE if its missing can also have fees and a fee category
       TxnUtil.setInvstTxnType(Partxn,InvestTxnType.MISCINC)
-      if secAcct != None:    # must have found a ticker
+      if secAcct is not None:    # must have found a ticker
          secSplit = SplitTxn.makeSplitTxn(Partxn, 0, 0, 0, secAcct, desc, -1, AbstractTxn.STATUS_UNRECONCILED)
          TxnUtil.setSecurityPart(secSplit)
          Partxn.addSplit(secSplit)
@@ -595,7 +519,7 @@ class ScotiaInvnew:
       Partxn.addSplit(incSplit)
     elif action == 'MiscExp':    # must have a security to go with this expense.if none use the FAKE one. the amt sign needs to be negitive.can also have fees and fee catagory
       TxnUtil.setInvstTxnType(Partxn,InvestTxnType.MISCEXP)
-      if secAcct != None:    # must have found a ticker
+      if secAcct is not None:    # must have found a ticker
          secSplit = SplitTxn.makeSplitTxn(Partxn, 0, 0, 0, secAcct, desc, -1, AbstractTxn.STATUS_UNRECONCILED)
          TxnUtil.setSecurityPart(secSplit)
          Partxn.addSplit(secSplit)
@@ -609,8 +533,7 @@ class ScotiaInvnew:
       Partxn.addSplit(expSplit)
     elif action == 'BANK' : 
       TxnUtil.setInvstTxnType(Partxn,InvestTxnType.BANK)
-      autoAcct = None  
-      autoAcct = rootAcct.getAccountByName('unknown') # a catagory. this should be the account that transfered the money in.
+      autoAcct = rootAcct.getAccountByName('unknown') # a catagory. this should be the account that transferred the money in or out.
       if autoAcct is None:
         print lineNo() + "no catagory called unknown"
         return
@@ -624,7 +547,7 @@ class ScotiaInvnew:
 	TxnUtil.setInvstTxnType(Partxn,InvestTxnType.MISCEXP)
       else: 	
         TxnUtil.setInvstTxnType(Partxn,InvestTxnType.MISCINC)
-      if secAcct != None:    # must have found a ticker
+      if secAcct is not None:    # must have found a ticker
          secSplit = SplitTxn.makeSplitTxn(Partxn, 0, 0, 0, secAcct, desc, -1, AbstractTxn.STATUS_UNRECONCILED)
          TxnUtil.setSecurityPart(secSplit)
          Partxn.addSplit(secSplit)
@@ -641,7 +564,7 @@ class ScotiaInvnew:
       Partxn.addSplit(expSplit)
     else: 
       print lineNo() + "Error Unknown action", action
-      raise Exception ('Unkown Action') 
+      raise Exception ('Unknown Action')
       return
     txnSet.addNewTxn(Partxn)
 #.........................................end of processTxn function    
@@ -676,7 +599,7 @@ class ScotiaInvnew:
     break
 
     
-  if accountName == None: # must be running from the console , so lets get an account number from the console user
+  if accountName is None: # must be running from the console , so lets get an account number from the console user
       i = 0
       for i in xrange(0,len(accountNames)): # prints a list of all Known Scotia Accounts on the console
 	print "Enter "+str(i)+" for ",accountNames[i]
@@ -699,13 +622,14 @@ class ScotiaInvnew:
   sym = fin.readline()                 #read the first line and throw it away
   #print 'HEADER=',sym
 
-
   while 1:
     sym = fin.readline()
-    if len(sym) <= 0:
+#    print lineNo() + "len(sym) " , len(sym)
+    if len(sym) <= 50:
       break
-#  sym = sym.replace(',',' ') # change , to blanks
-    lst = sym.split(',')
+    sym = sym.lstrip().rstrip() # remove trailing and proceeding garbage CR LF \r \n ' ' and spaces
+#  sym = sym.replace(',',' ') # changes , to blanks.. don't do this'
+    lst = sym.split(',')      # removes the  ',' too
     print lineNo() + str(lst)
     
 # Note Scotia has hidden the fee in the "Settlement Amount" and moneydance adjusts the price to compensate. Messes things up
@@ -737,8 +661,8 @@ class ScotiaInvnew:
       year= transdate[0]
     except IndexError as err:
       print lineNo() + "Got an IndexError on date"
-      print lineNo() + "This is not a Scotia csv file"
-      raise Exception (lineNo() + " Not a Scotia csv file")
+      print lineNo() + "Looks like this is not a Scotia csv file"
+      raise Exception (lineNo() + "Looks like this is not a Scotia csv file")
 #    print 'day=',day
 #    print 'month=',month
 #    print 'year=',year
@@ -762,41 +686,48 @@ class ScotiaInvnew:
     secAcct = None  
     tickerSym = lst[1]
     Description = lst[0]
-    tickerSym = tickerSym.strip()
+    tickerSym = tickerSym.strip() # turned " " into "" an empty string
     Description = Description.strip()
     
+ # not using the descTable any more
  #   print "len,tickerSym ",len(tickerSym),tickerSym
-    if (len(tickerSym) <= 0) or (tickerSym == ' '):  # this also picks up tickerSym == None
-      print lineNo() + " Missing ticker symbol, try Looking it up using the description "
-      tickerSym = lookupTicker(Description,DescTable)
-      if tickerSym == None: print lineNo() + "lookupTicker using its Description failed. ticker is now None"
-    else: 	
-#      lets see if its a Bond , Mutalfund or not on the TSX , check the ticker against the Bond Table first
+ #   if (len(tickerSym) <= 0) or (tickerSym == ' '):  # this also picks up tickerSym is None
+ #     print lineNo() + " Missing ticker symbol, try Looking it up using the description "
+ #     tickerSym = lookupTicker(Description,DescTable) # trys to find the ticker in the DescTable using the Scotia Description
+ #     if tickerSym is None: print lineNo() + "lookupTicker using its Description failed. ticker is still None"
+    if tickerSym != '':
+#    else: # its not None but will be missing the -T
+#      ok so we got a ticker ,lets see if its a Bond , Mutual fund or not on the TSX , check the ticker against the Bond Table first
       try: 
         desc2 = BondTable[tickerSym]['desc'] # try to get the Bond desc using the tickerSym
+        print lineNo() + "its in the BondTable" , desc2
+        # BondTable is a dictionary of dictionaries
+        # example   '5VJYFL0':{'desc':'ZAG BANK MONTHLY INTEREST GIC','coupon':2.95,'date':'2023-03-15','accrued':0,'fee':0},
       except KeyError as e:
 #	print "we got a KeyError"
-	print lineNo() +" Its not a bond",Description
-#       check if its a mutual fund ticker use the StockwatchSymbols table
-        try:
+	print lineNo() +" Its not in the BondTable",Description
+        try: #       check if its a mutual fund ticker use the StockwatchMutualFundSymbols table its a dictionary of glob.mutualfund symbols verses stockwatch.mutuafund symbolsl
 #	  print "test.. ",tickerSym
 #	  print len(tickerSym)
-	  symbol2 = definitions.StockwatchSymbols[tickerSym]
-#	  print "test2 ",symbol2
+	  symbol2 = definitions.StockwatchMutualFundSymbols[tickerSym] # example 'TML202-T':'BIF*CDN' .. should return BIF*CDN if TML202-T is in the dictionary
+	  print linNo() + "its a mutual fund StockwatchMutualFundSymbols table " + tickerSym + ' : ' + symbol2
 	except KeyError as e:
-	  print lineNo() + "its not a mutual fund",tickerSym
+	  print lineNo() + "its not a mutual fund ",tickerSym
+	  # so its not a Bond or a Mutual Fund its time to glue on the -T""
           tickerSym = tickerSym.replace('.','-') 
           tickerSym = tickerSym+"-T" 
+#          print lineNo() + "cleaned up the ticker ", tickerSym
           try: #  check to see if its on a different exchange
-	    NYXSym = definitions.SymbolTable[tickerSym]
-	  except KeyError as e:
-#	    print "its on the TSX"
-	    fudge = 'fudge' # get an error without a line here
-          else:
-	    print lineNo() + "its not on the TSX ",NYXSym
+	    NYXSym = definitions.ExchangeTable[tickerSym] # Example this will return  KBM-N given KBM-T
+            print lineNo() + "its on a different Exchange ", NYXSym
+            print lineNo() + "its not on the TSX ",NYXSym
 	    tickerSym = NYXSym # swap the symbol
+	  except KeyError as e:
+#	    print "is not in the Symbol table so it must be on the TSX"
+	    fudge = 'Ticker Passed all the tests' # got an error without a line here
+
 	    
-#          for tsxSym ,NYXSym in SymbolTable.items():  #check to see if this symbol is on a different stock exchange
+#          for tsxSym ,NYXSym in ExchangeTable.items():  #check to see if this symbol is on a different stock exchange
 ##            print "tsxSym=",tsxSym 
 ##            print "NYXSym=",NYXSym
 ##            print len(NYXSym)
@@ -806,37 +737,55 @@ class ScotiaInvnew:
 #	      tickerSym = NYXSym
 # #             print "new tickerSym=",tickerSym
 #	      break  
-	else:
-	  print lineNo() + "it is a mutual fund",symbol2 # just used for info
-      else:
-	  print lineNo() + "It is a Bond ", desc2 # just used for info
 	          
-#    print 'ticker ',tickerSym
+#    print lineNo() + 'ticker ',tickerSym
+ #   print lineNo() + 'ticker len',len(tickerSym) # says 0
+ #   print lineNo() + 'ticker ',lst[1]
+ #   print lineNo() + 'ticker len',len(lst[1]) # says 1
+ #   if tickerSym is None: print "ticker is None"
+ #   else: print 'ticker is Not None' # says this
+ #   if tickerSym != ' ': print "ticker is not a single blank char" # says this
+ #   else: print "ticker is a blank char"
+ #   print(type(tickerSym)) # says <type str>
+ #   print(type(lst[1]))    #  says <type str>
+ #   print tickerSym.encode('hex') # says nothing
+ #   print lst[1].encode('hex')    # says 20
+ #   print tickerSym.isspace() # says False
+ #   print lst[1].isspace()    # says True all chars must be 0x20
+ #   byte_Sym = tickerSym.encode( encoding="utf-8")
+ #   print list(byte_Sym)          # []
+ #   byte_lst1 = lst[1].encode (encoding = "utf-8")
+ #   print list(byte_lst1)                        # ['']
+    if ( tickerSym == '' ): print lineNo() + "We got a missing Ticker "    # says True..........................................
+    # conclusion the single blank char 0x20 in lst[1] got eaten by tickerSym.strip
 
-    if tickerSym != None:  
+    if tickerSym != '':  # we got a ticker
 #      print "ticker4 ",tickerSym
-      secAcct = getSecurityAcct(root, invAcct, tickerSym) # this fails if the ticker has not been added to the Account'
-      if secAcct is None: # the ticker we have is no good
+      secAcct = getSecurityAcct(root, invAcct, tickerSym) # this also fails if the ticker has not been added to the Account'
+      if secAcct is None: # we have a ticker but its no good
+#       Not doing this any more .. too much trouble keeping the desc table up to date
 #	tickerSym = lookupTicker(Description,DescTable) # maybe its the wrong ticker on the record see if we can find the right one.
 #	secAcct = getSecurityAcct(root, invAcct, tickerSym)
 #        if secAcct is None: # the ticker is still no good
           secAcct = getSecurityAcct(root,invAcct,"FAKE-T") # just fake it  
-          if secAcct == None:
-	     raise Exception ('FAKE-T missing')
+          if secAcct is None:
+             print lineNo() + "FAKE-T is Missing, Maybe you should Add it to your Account" # this shows up on the Jython Console
+	     raise Exception ('FAKE-T missing') # this shows up on the Moneydance Console
           memo = 'BAD Ticker '+ str(tickerSym) +' ' + memo
 	  print lineNo() + "BAD Ticker getSecurityAcct Failed for",tickerSym
 	  print lineNo() + "Maybe you should Add it to your Account"
-    else: # tickerSym is None
-      tickerSym= lookupBondTicker(lst[0],BondTable) # bonds may not have tickers  
-      print lineNo() + "tickerSym" , tickerSym
-      memo = str(tickerSym) + memo
+    else: # tickerSym is Empty
+      tickerSym= lookupBondTicker(Description,BondTable) # bonds do not have tickers
+      print lineNo() + "lookupBondTicker returned ticker " , tickerSym
+      memo = ' ' + str(tickerSym) + ' ' + memo
       secAcct = getSecurityAcct(root, invAcct, tickerSym)
       if secAcct is None: # the ticker is still no good	
 	print lineNo() + "lookupBondTicker Failed faking it ",tickerSym
         secAcct = getSecurityAcct(root,invAcct,"FAKE-T") # just fake it  
-        if secAcct == None:
+        if secAcct is None:
+          print lineNo() + "FAKE-T is Missing, Maybe you should Add it to your Account" # this shows up on the Jython Console
 	  raise Exception ('FAKE-T missing') 
-        memo = 'Ticker Missing' + memo
+        memo = ' Ticker Missing ' + memo
  
 #    decimals = secAcct.getCurrencyType().getDecimalPlaces() # securities (stocks) are stored with 4 decimal places
 #    userRate = secAcct.getCurrencyType().getUserRate()
@@ -891,12 +840,13 @@ class ScotiaInvnew:
         BrokerFee = BrokerFee * (-1.0)
       tickerSym= lookupBondTicker(lst[0],BondTable) # bonds may no have tickers  
       memo = tickerSym + memo
-      if tickerSym == None:
+      if tickerSym is None:
 	print lineNo() + "ticker sym missing ",lst[0]
       secAcct = getSecurityAcct(root, invAcct, tickerSym)
       if secAcct is None: # the ticker we have is no good
           secAcct = getSecurityAcct(root,invAcct,"FAKE-T") # just fake it  
-          if secAcct == None:
+          if secAcct is None:
+             print lineNo() + "FAKE-T missing"
 	     raise Exception ('FAKE-T missing')
           memo = 'BAD BOND Ticker' + memo
 	  print lineNo() + "BAD BOND Ticker getSecurityAcct Failed for",tickerSym
@@ -918,7 +868,9 @@ class ScotiaInvnew:
     
  
 #######  root.refreshAccountBalances()  #not in 2015
-
+  fin.close()
+  import os
+  os.rename(csvfile, csvfile + '-done')
   AcctBook = root.getBook() 
   AcctBook.refreshAccountBalances()
   print lineNo() + "Done Scotia-Inv-new.py"
