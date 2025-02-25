@@ -21,11 +21,11 @@ class BMOInv:
   execfile("/opt/moneydance/scripts/AccountNames.py") # defines accountNames and BMOAccounts
 
 
-  csvfile = "/home/wayne/Downloads/TransactionHistory.csv" # this is an example of where the default BMO csv file lives
+  csvfile = "~/Downloads/TransactionHistory.csv" # this is an example of where the default BMO csv file lives
   execfile("/opt/moneydance/scripts/selectBMOCsvfile.py") # execfile works .. select file to open .. file must be in /home/wayne/Downloads
-  file3 = open('/opt/moneydance/scripts/tmp/selectBMOCsvfile.txt', 'rb') # this is where the selectBMOCsvfile.py script puts the selection
+  file3 = open('/opt/moneydance/scripts/tmp/selectBMOCsvfile.txt', 'rb') # this is where the selectBMOCsvfile.py script puts the selected .csv file name
   print lineNo() + " ", file3
-  csvfile = file3.read()
+  csvfile = file3.read() # get the selected csv file name
   file3.close()
 
   def str2date(day,month,year): # Scotia Bank date format ... not used by this script
@@ -125,7 +125,7 @@ class BMOInv:
     import com.infinitekind.moneydance.model.AccountBook
 #    print("getSecurityAcct 234")
 # below makes sure currencies.getCurrencyByTickerSymbol is never called with tickerSym = None .. it blows up with a Java Null pointer error
-    if tickerSym == None:
+    if tickerSym is None:
       return None
     
  #   Rootaccount2 = getRootAccount() # test
@@ -138,7 +138,7 @@ class BMOInv:
       return None
     
     currencies = AcctBook.getCurrencies()
-    if currencies is None:
+    if currencies is None: # or if not currencies or if currencies == None
       print lineNo() + " AcctBook.getCurrencies() failed"
       return None
  
@@ -214,55 +214,27 @@ class BMOInv:
     import time
     from java.awt.event import ActionListener
 
-#    print("259 amt",amt) #was negative
-#    print("260 action",action) #was interest
-#    raise Exception ('Testing')
-
-#    def showMessage66 (self,message) :   # moved to runScripts.py
-#        #  mframe = JFrame("Message")
-#        global mframe66
-#        mframe66 = self.JFrame(message)
-##       mframe.setSize(1000, 100)
-#        mframe66.setSize(1000, 50)
-#        mframe66.setDefaultCloseOperation(self.WindowConstants.DISPOSE_ON_CLOSE)
-#        mpnl = self.JPanel()
-#        mframe66.add(mpnl)
-#        mlabel = self.JLabel(str(message))
-#        mpnl.add(mlabel)
-#        mframe66.setVisible(True)
-#        self.WindowClose66()
-
-#    def __init__(self):                # moved to runScripts.py
-#        from javax.swing import Timer
-#        self.timer = Timer(5000, self)
-#        self.timer.start()
-#    def actionPerformed(self, e):
-#        self.timer.stop()
-#        mframe.dispose()
-#        mframe.setVisible(True)
-#        self.WindowClose66()
-
-    if rootAcct == None:
+    if rootAcct is None:
         print lineNo() + " Error processTxnBMO the rootAcct is missing"
         raise Exception (lineNo() + " processTxnBMO is Missing the rootAccount")
 
-    if invAcct == None:
+    if invAcct is None:
         print lineNo() + " Error processTxnBMO the invAcct is missing"
         raise Exception (lineNo() + " processTxnBMO is Missing the invAccount")
 
-    if secAcct == None:
+    if secAcct is None:
         print lineNo() + " Error processTxnBMO the secAcct is missing"
         print "did you forget to add the security to the account ??"
         raise Exception (lineNo() + " processTxnBMO is Missing the secAccount")
 
     XferCategory = "Unknown" # only used by BANK transactions. it could be an Account but isn't in this script'
 
-    if action == '' or action == ' ':
+    if action == '' or action == ' ' or action is None:
         print lineNo() + " We got a Blank action",desc
-        memo = 'ACTION WAS BLANK'
-        action = 'Interest' # take a wild guess
+        memo = 'ACTION WAS BLANK' + memo
+        action = 'Interest' # taking a wild guess
         print lineNo() + " tickerSym:",tickerSym # ticker is GRT-UN-T
-        showMessage66(runScripts,"Fudged a BLANK Action")
+        showMessage66(runScripts,"Fudged a BLANK Action to Interest")
                          # So far this is always a ROC(Return of Capital) from Granite GRT.UN
         time.sleep (10)  # need some time to display the message
 
@@ -286,7 +258,7 @@ class BMOInv:
         memo = action + memo
         action = 'Dividend'
 
-    if action == 'Dividend' and rate != 0 and val != None and amt != None  :  # MID436 transaction .. has Price(rate) and number of Stocks(val) and total amount(amt)
+    if action == 'Dividend' and rate != 0 and val is not None and amt is not None  :  # MID436 transaction .. has Price(rate) and number of Stocks(val) and total amount(amt)
         print lineNo() + " We got a dividend reinvestment transaction for:",desc      # looks like a mutual fund
         memo = action + memo
         action = 'DVF' # dividend reinvest
@@ -447,7 +419,7 @@ class BMOInv:
 
     elif action == 'MiscInc':    # we could have no security to go with this income maybe just interest on cash in the account
       TxnUtil.setInvstTxnType(Partxn,InvestTxnType.MISCINC)
-      if secAcct != None:    # must have found a ticker
+      if secAcct is not None:    # must have found a ticker
          secSplit = SplitTxn.makeSplitTxn(Partxn, 0, 0, 0, secAcct, desc, -1, AbstractTxn.STATUS_UNRECONCILED)
          TxnUtil.setSecurityPart(secSplit)
          Partxn.addSplit(secSplit)
@@ -470,7 +442,7 @@ class BMOInv:
 #      print "508 processTxn changing Interest to Dividend" # moneydance has no such thing as Interest everything is a dividend (taxable or not taxable ?)
 # in  moneydance you change the incSplit to either 'Interest Income' or 'Non Taxable Dividend instead'
       TxnUtil.setInvstTxnType(Partxn,InvestTxnType.DIVIDEND)
-      if secAcct != None:    # must have found a ticker
+      if secAcct is not None:    # must have found a ticker
          secSplit = SplitTxn.makeSplitTxn(Partxn, 0, 0, 0, secAcct, desc, -1, AbstractTxn.STATUS_UNRECONCILED)
          TxnUtil.setSecurityPart(secSplit)
          Partxn.addSplit(secSplit)
@@ -492,7 +464,7 @@ class BMOInv:
 
     elif action == 'MiscExp':    # we could have no security to go with this expense maybe just more bank fees. the amt sign needs to be negitive in the csv file
       TxnUtil.setInvstTxnType(Partxn,InvestTxnType.MISCEXP)
-      if secAcct != None:    # must have found a ticker
+      if secAcct is not None:    # must have found a ticker
          secSplit = SplitTxn.makeSplitTxn(Partxn, 0, 0, 0, secAcct, desc, -1, AbstractTxn.STATUS_UNRECONCILED)
          TxnUtil.setSecurityPart(secSplit)
          Partxn.addSplit(secSplit)
@@ -514,12 +486,13 @@ class BMOInv:
     elif action == 'BANK' :
       TxnUtil.setInvstTxnType(Partxn,InvestTxnType.BANK)
       autoAcct = rootAcct.getAccountByName(XferCategory)
-      if autoAcct is None: print lineNo() + " no catagory called ", XferCategory
+      if autoAcct is None:
+              print lineNo() + " no catagory called ", XferCategory
 ###        return # should default to Unknown
       xfrSplit = SplitTxn.makeSplitTxn(Partxn, -long(amt), -long(amt), 0, autoAcct, '', -1, AbstractTxn.STATUS_UNRECONCILED)
       TxnUtil.setXfrPart(xfrSplit)
       Partxn.addSplit(xfrSplit)       # fills in the "Transfer" account name with "Bank Fees" etc..
-# there are no Broker Fees on a BANK transfer
+# assume there are no  Fees  on a BANK transfer will default to unkown should set it to Fees Broker too
     else: 
       print lineNo() + " Error Unknown action", action # this is a big deal you will need to edit this script
       print lineNo() + " Desc ",desc
@@ -534,6 +507,9 @@ class BMOInv:
     txnSet.addNewTxn(Partxn)
     time.sleep (0.100)  # seems to have fixed the thread crashs ... its in seconds ,,,, 100 milliseconds
 #.........................................end of processTxnBMO function
+#  raise Exception('I know Python!')
+# .........................................................This Script begins execution here
+
     
   print lineNo() + " BMO-Inv-new.py reading transactions from ",csvfile
   accountName = None
@@ -557,12 +533,10 @@ class BMOInv:
     sys.argv = [''] # clean the arguments out.
     break  
   
-  if accountName == None:
+  if accountName is None:
       print lineNo() + " We need an Account Number"
       raise Exception (lineNo() + ' We need an Account Number')
 
-#  raise Exception('I know Python!')
-# .........................................................This Script begins execution here
 
 
   root = moneydance.getRootAccount()
@@ -571,19 +545,23 @@ class BMOInv:
 #  fin = open( runScripts.infile ,'r') # this is the csv file we are going to process
   fin = open( csvfile ,'r') # this is the csv file we are going to process
 
-  sym = fin.readline()                 #read the first line and throw it away
-  print lineNo() +" HEADER",sym
+  sym = fin.readline()                 #read the first line and throw it away ..  file starts with ef bb  bf .. or its "EF BB BF" means UTF-8
+                                       # What you are seeing is the BOM (Byte Order Mark) - it indicates this is a Unicode file (UTF-8 in this case, I believe).
+  print lineNo() +" HEADER1",sym
   sym = fin.readline()                 #read the second line and throw it away
+  print lineNo() +" HEADER2",sym
   sym = fin.readline()                 #read the third line and throw it away
+  print lineNo() +" HEADER3",sym
 
 
 
   while 1:
     sym = fin.readline()
-    if len(sym) <= 0:
+    if len(sym) <= 50:
       break
 #  sym = sym.replace(',',' ') # don't change , to blanks
-    lst = sym.split(',')
+    sym = sym.lstrip().rstrip() # remove trailing and proceeding garbage CR LF \r \n ' ' and spaces
+    lst = sym.split(',')        # removes the  ',' too
     print lineNo() + " lst", lst
     
 # Note BMO has hidden the fee in the "Total Amount" and moneydance adjusts the price to compensate. Messes things up
@@ -627,8 +605,8 @@ class BMOInv:
       year= transdate[0]
     except IndexError as err:
       print lineNo() + "Got an IndexError on date"
-      print lineNo() + "This is not a BMO csv file"
-      raise Exception (lineNo() + " Not a BMO csv file")
+      print lineNo() + "Looks like this is not a BMO csv file"
+      raise Exception (lineNo() + "Looks like this is not a BMO csv file")
 #    print 'day=',day
 #    print 'month=',month
 #    print 'year=',year
@@ -676,7 +654,7 @@ class BMOInv:
     else: # we got a good one
       tickerSym = tickerSym.replace('.','-') 
       tickerSym = tickerSym+"-T" #  what about the other stock exchanges
-      for tsxSym ,NYXSym in definitions.SymbolTable.items():  #check to see if this symbol is on a different stock exchange then the TSX
+      for tsxSym ,NYXSym in definitions.ExchangeTable.items():  #check to see if this symbol is on a different stock exchange then the TSX
 #        print tsxSym , NYXSym
 #        print len(NYXSym)
 	if len(NYXSym) <= 0: break
@@ -689,13 +667,13 @@ class BMOInv:
       
 #    print 'ticker ',tickerSym #prints SIS-T
 
-    if tickerSym != None:  
+    if tickerSym is not None:
       secAcct = getSecurityAcct(root, invAcct, tickerSym)
       if secAcct is None:
          print lineNo() + " This security needs to be added to the account"
          print lineNo() + " Using Fake-T  for now"
          secAcct = getSecurityAcct(root,invAcct,"FAKE-T") # just fake it
-         if secAcct == None:
+         if secAcct is None:
 	   raise Exception ('Security FAKE-T is missing, add it to your account')
          memo = memo + 'Ticker Not found'
 #      if secAcct is None: # the ticker we have is no good .......... lookup Ticker from description  is missing in BMO but exists in Scotia
@@ -711,7 +689,7 @@ class BMOInv:
     else: # ticker is None
       print lineNo() + "This transaction has no tickerSymbol using FAKE-T"
       secAcct = getSecurityAcct(root,invAcct,"FAKE-T") # just fake it
-      if secAcct == None:
+      if secAcct is None:
 	raise Exception (lineNo() + 'Security FAKE-T is missing')
       memo = memo + 'Ticker Missing'
   
@@ -803,9 +781,11 @@ class BMOInv:
 #   processTxnBMO(rootAcct, invAcct,    secAcct, dateInt,    desc,  memo, action, amt,     val,      rate  , BrokerFee , tickerSym):
     processTxnBMO(root,     invAcct ,   secAcct, transdate ,lst[3], memo, lst[2], Amount,  Quantity, Price , BrokerFee , tickerSym )
 #    raise Exception('I know Python!')    
- 
+  # while read csv file loop ends here
 #######  root.refreshAccountBalances()  #not in 2015
-
+  fin.close()
+  import os
+  os.rename(csvfile, csvfile + '-done')
   AcctBook = root.getBook() 
   AcctBook.refreshAccountBalances()
   print lineNo() + " Done BMO-Inv-new.py"
