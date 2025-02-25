@@ -3,12 +3,14 @@
 # version 2/17/2025
 
 
-global accountNames
+global ScotiaAccounte
 # Scotia Bank
-accountNames = ['BMO RRSP TEST',
+ScotiaAccounts = ['BMO RRSP TEST',
               'Scotia1',
 	      'Scotia2'
               ]
 
 global BMOAccounts
-BMOAccounts = ['BMO RRSP TEST']
+BMOAccounts = ['BMO RRSP TEST',
+	      'BMO2'
+	      ]
