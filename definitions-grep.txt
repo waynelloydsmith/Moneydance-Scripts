@@ -1,11 +1,12 @@
-BMO-Inv-new.py:             uses SymbolTable to check if the stock is not on the TSX maybe on NYSE or NEO etc
-updateDaylyStockwatch.py:   uses StockwatchSymbols and StockwatchIndexs and StockPriceHistoryStockwatch
-updateHistoryStockwatch.py: uses StockwatchSymbols to check for mutual fund
+BMO-Inv-new.py:             uses ExchangeTable to check if the stock is not on the TSX maybe on NYSE or NEO etc
+ScotiaInvnew.py:            uses StockwatchMutualFundSymbols to check for mutual fund and ExchangeTable to check if its not on the TSX
+updateDaylyStockwatch.py:   uses StockwatchMutualFundSymbols and StockwatchIndexs and StockPriceHistoryStockwatch
+updateHistoryStockwatch.py: uses StockwatchMutualFundSymbols to check for mutual fund
 
 whats in definitions.py
-StockwatchSymbols           is a dictionary of mutual funds ..  I don't have any of these any more
+StockwatchMutualFundSymbols           is a dictionary of mutual funds ..  I don't use these any more
 StockwatchIndexs            is a dictionary of currency exchange rates. like USD to CND dollars
 StockPriceHistoryStockwatch is the big dictionary of all the stocks I'm tracking on the TSX and the NYSE (could be simplified .. remove the web page )
-SymbolTable                 is a dictionary of Symbols that are not on the TSX like the NYSE , Venture Exchange, NEO
+ExchangeTable                 is a dictionary of Symbols that are not on the TSX like the NYSE , Venture Exchange, NEO
                             .. the second entry has to be the exchange that stockwatch uses for them
 

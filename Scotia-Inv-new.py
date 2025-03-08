@@ -53,23 +53,22 @@ class ScotiaInvnew:
 #    })
 
 
-  PreferedShareTable = dict({ # a dictionary of dictionaries  .. not used
-    'CU-PR-F-T':{'desc':'CDN UTIL 4.5% CUM RDM CU.PR.F','type':'Fixed Cumulative','coupon':4.5,'issue-date':'2013-03-19','series':'CC','first-redem-date':'2018-06-1','first-redem-price':26}, # redemption price drops .25 per year until it reaches $25 on june 1 2022  
-    'GWO-PR-S-T':{'desc':'Great West Life Preferred GWO.PR.S','type':'Fixed Non Cumulative','coupon':5.2,'issue-date':'2014-05-22','series':'S','first-redem-date':'2019-06-30','first-redem-price':26}   # redemption price drops .25 per year until it reaches $25 on june 30 2023   
-    })
+#  PreferedShareTable = dict({ # a dictionary of dictionaries  .. not used
+#    'CU-PR-F-T':{'desc':'CDN UTIL 4.5% CUM RDM CU.PR.F','type':'Fixed Cumulative','coupon':4.5,'issue-date':'2013-03-19','series':'CC','first-redem-date':'2018-06-1','first-redem-price':26}, # redemption price drops .25 per year until it reaches $25 on june 1 2022
+#    'GWO-PR-S-T':{'desc':'Great West Life Preferred GWO.PR.S','type':'Fixed Non Cumulative','coupon':5.2,'issue-date':'2014-05-22','series':'S','first-redem-date':'2019-06-30','first-redem-price':26}   # redemption price drops .25 per year until it reaches $25 on june 30 2023
+#    })
 
 
 #  from definitions import definitions
 #  execfile("/opt/moneydance/scripts/definitions.py") #user.home is /home/wayne --- run jython_info.py to check it out
-#  the structure below this line is used by the Scotia itrade csv file import script Scotia-Inv-new.py
-# the name used by Scotia for mutual funds  carrys the fund number in brackets
-# used to look up the ticker symbol , given the name used by Scotia Investments only for processing downloads from Scotia Investments   
+# the name used by Scotia for mutual funds  carries the fund number in brackets
+# used to look up the ticker symbol , given the description used by Scotia Investments only good for processing downloads from Scotia Investments
 # so the description needs to be the description used by Scotia Itrade not the description used by moneydance
 # if a transaction is missing its ticker .. the ticker can be looked up using this Table .. if the description hasn't changed ....'
 # Scotia-Inv.py select-Scotiabank-Inv-file2.py are no longer used . The csv file imported is always /home/wayne/ScotiaBank/transactionHistory.csv
 
 
-#  DescTable = {
+#  ScotiaDescTable = { # these are all mutual funds ?  #moved to ScotiaDescTable.py
 #   'TML202':'FRANKLIN BISSETT CDN EQUITY FD (202)',
 #   'MFC738':'CUNDILL CANADIAN SECURITY FUND SER C (738)',
 #   'BIP151':'BRANDES GLOBAL EQUITY FUND (151)',
@@ -83,10 +82,10 @@ class ScotiaInvnew:
 #   }
 
 
-# given a description try to find the ticker that go with it.
+# given a BOND description try to find the ticker that goes with it.
   def lookupBondTicker(description,table): 
     tickerSym = None
-    description = description[:14] # only checking 14 characters
+    description = description[:10] # only checking 10 characters
     for ticker in table:
 #      print ticker, table[ticker]['desc']
       desc = table[ticker]['desc']
@@ -689,31 +688,32 @@ class ScotiaInvnew:
     tickerSym = tickerSym.strip() # turned " " into "" an empty string
     Description = Description.strip()
     
- # not using the descTable any more
+ # Scotia-Inv-new is not using the ScotiaDescTable any more
  #   print "len,tickerSym ",len(tickerSym),tickerSym
  #   if (len(tickerSym) <= 0) or (tickerSym == ' '):  # this also picks up tickerSym is None
  #     print lineNo() + " Missing ticker symbol, try Looking it up using the description "
- #     tickerSym = lookupTicker(Description,DescTable) # trys to find the ticker in the DescTable using the Scotia Description
+ #     tickerSym = lookupTicker(Description,ScotiaDescTable) # trys to find the ticker in the ScotiaDescTable using the Scotia Description
  #     if tickerSym is None: print lineNo() + "lookupTicker using its Description failed. ticker is still None"
     if tickerSym != '':
 #    else: # its not None but will be missing the -T
 #      ok so we got a ticker ,lets see if its a Bond , Mutual fund or not on the TSX , check the ticker against the Bond Table first
+# the try: below works because the BondTable is indexed by ticker.. you need to use the lookup functions to do the reverse ..
       try: 
-        desc2 = BondTable[tickerSym]['desc'] # try to get the Bond desc using the tickerSym
+        desc2 = BondTable[tickerSym]['desc'] # try to get the Bond desc using the tickerSym  .. doesn't really do anything '
         print lineNo() + "its in the BondTable" , desc2
         # BondTable is a dictionary of dictionaries
         # example   '5VJYFL0':{'desc':'ZAG BANK MONTHLY INTEREST GIC','coupon':2.95,'date':'2023-03-15','accrued':0,'fee':0},
       except KeyError as e:
 #	print "we got a KeyError"
 	print lineNo() +" Its not in the BondTable",Description
-        try: #       check if its a mutual fund ticker use the StockwatchMutualFundSymbols table its a dictionary of glob.mutualfund symbols verses stockwatch.mutuafund symbolsl
+        try: #       check if its a mutual fund ticker use the StockwatchMutualFundSymbols table its a dictionary of globe.mutualfund symbols verses stockwatch.mutuafund symbolsl
 #	  print "test.. ",tickerSym
 #	  print len(tickerSym)
 	  symbol2 = definitions.StockwatchMutualFundSymbols[tickerSym] # example 'TML202-T':'BIF*CDN' .. should return BIF*CDN if TML202-T is in the dictionary
 	  print linNo() + "its a mutual fund StockwatchMutualFundSymbols table " + tickerSym + ' : ' + symbol2
 	except KeyError as e:
 	  print lineNo() + "its not a mutual fund ",tickerSym
-	  # so its not a Bond or a Mutual Fund its time to glue on the -T""
+	                                                             # so its not a Bond or a Mutual Fund its time to glue on the -T""
           tickerSym = tickerSym.replace('.','-') 
           tickerSym = tickerSym+"-T" 
 #          print lineNo() + "cleaned up the ticker ", tickerSym
@@ -721,7 +721,7 @@ class ScotiaInvnew:
 	    NYXSym = definitions.ExchangeTable[tickerSym] # Example this will return  KBM-N given KBM-T
             print lineNo() + "its on a different Exchange ", NYXSym
             print lineNo() + "its not on the TSX ",NYXSym
-	    tickerSym = NYXSym # swap the symbol
+	    tickerSym = NYXSym                                                                       # swap the symbol
 	  except KeyError as e:
 #	    print "is not in the Symbol table so it must be on the TSX"
 	    fudge = 'Ticker Passed all the tests' # got an error without a line here
@@ -756,8 +756,8 @@ class ScotiaInvnew:
  #   print list(byte_Sym)          # []
  #   byte_lst1 = lst[1].encode (encoding = "utf-8")
  #   print list(byte_lst1)                        # ['']
-    if ( tickerSym == '' ): print lineNo() + "We got a missing Ticker "    # says True..........................................
-    # conclusion the single blank char 0x20 in lst[1] got eaten by tickerSym.strip
+    if ( tickerSym == '' ): print lineNo() + "We still have a missing Ticker "    # says True..........................................
+    # conclusion: the single blank char 0x20 in lst[1] got eaten by tickerSym.strip
 
     if tickerSym != '':  # we got a ticker
 #      print "ticker4 ",tickerSym
@@ -775,13 +775,13 @@ class ScotiaInvnew:
 	  print lineNo() + "BAD Ticker getSecurityAcct Failed for",tickerSym
 	  print lineNo() + "Maybe you should Add it to your Account"
     else: # tickerSym is Empty
-      tickerSym= lookupBondTicker(Description,BondTable) # bonds do not have tickers
+      tickerSym= lookupBondTicker(Description,BondTable) # bonds never have tickers
       print lineNo() + "lookupBondTicker returned ticker " , tickerSym
       memo = ' ' + str(tickerSym) + ' ' + memo
       secAcct = getSecurityAcct(root, invAcct, tickerSym)
       if secAcct is None: # the ticker is still no good	
 	print lineNo() + "lookupBondTicker Failed faking it ",tickerSym
-        secAcct = getSecurityAcct(root,invAcct,"FAKE-T") # just fake it  
+        secAcct = getSecurityAcct(root,invAcct,"FAKE-T") # just fake it  .. its not a Bond , its not a mutual fund , its not on the NYSE
         if secAcct is None:
           print lineNo() + "FAKE-T is Missing, Maybe you should Add it to your Account" # this shows up on the Jython Console
 	  raise Exception ('FAKE-T missing') 

@@ -1,0 +1,41 @@
+see
+https://infinitekind.tenderapp.com/discussions/problems/102169-wrong-date2
+this is a continuation of the above discussion.
+.................................................................................. update Feb 24 2025
+looking at <DTPOSTED> in the downloaded .qfx files
+CIBC uses noon [-5:EST]
+Canadian Tire uses no time zone but fills in the hour
+Scotia Bank is using my timezone now [-8:MST] or GMT-8 .. how cool
+BMO is using 20250121000000.000[-5:EDT] which is midnight
+Most of Ontario is using EST in the winter and EDT in the summer:
+so BMO is located some where, where its summer time in February. lucky them.
+so of the 4 banks only BMO is causing me a problems.
+The day in my system gets shifted one day when I import the qfx.
+Its is caused by the midnight thing.
+The fix.
+two small scripts qfxStipper.py and gfxStripper.sh
+put them in /opt/moneydance/scritps
+now in kde do the following
+run ... kcmshell5 filetypes in a console
+then add a group to applications called "Quicken data"
+then under "Quicken data" general put *.qfx
+then add Applications to applications/Quicken data
+under "Application Preference Order" add
+/opt/moneydance/scripts/qfxStripper.sh
+Leafpad
+Mousepad
+Kate
+Make sure the stripper is at the top of the list.
+now open your Downloads folder with Dolphin
+click on a qfx file
+qfxStipper.py will run
+it only looks for [-5:EDT] and changes it to ''
+so if there are no [-5:EDT] in the qfx it doesn't change anything
+it will create a new qfx file called filename-fixed.qfx
+it will also creates a log /opt/moneydance/scripts/qfxStripper.log
+now you can drag and drop the filename-fixed.qfx file into moneydance.
+Since BMO is the only bank that is causing me a problem you don't need to click on the .qfx files from the other banks.
+just the BMO ones. so just drag and drop the others as usual into moneydance .
+if you accidentally click on a .qfx from a different bank its no big deal .
+you will just end up with a copy of the original .qfx file called filename-fixed.qfx
+this assumes you have Jython installed on your system.

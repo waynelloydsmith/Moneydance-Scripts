@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: utf8
 import sys
 from java.lang import System
 
@@ -19,9 +20,9 @@ print "sys.registry['java.library.path']= "
 for val in sys.registry['java.library.path'].split(':'):
   print val
 
-print "sys.registry['java.ext.dirs']= "  
-for val in sys.registry['java.ext.dirs'].split(':'):
-  print val
+#print "sys.registry['java.ext.dirs']= "  
+#for val in sys.registry['java.ext.dirs'].split(':'):
+#  print val
 
 #print "sys.cachedir=",sys.cachedir
 print "sys.registry['key'] = value -----------------------"
@@ -58,15 +59,22 @@ print "os.curdir",os.curdir          # '.'
 print "os.error",os.error            #exceptions.OSError
 print "os.getcwd()",os.getcwd()      # works '/home/wayne/source/Moneydance'
 #print "os.initModule",os.initModule  # needs two arguments
-#print "dir(os.java)",dir(os.java)    #  >>> dir(os.java) ['__name__', 'applet', 'awt', 'beans', 'io', 'lang', 'math', 'net', 'nio', 'rmi', 'security', 'sql', 'text', 'util']
-#print "dir(os.javapath)",dir(os.javapath)      # >>> dir(os.javapath) ['File', 'System', '__doc__', '__file__', '__name__', 'abspath', 'basename', 'commonprefix', 'dirname', 'exists', 'expanduser', 'gethome', 'getsize', 'getuser', 'isabs', 'isdir', 'isfile', 'islink', 'ismount', 'java', 'join', 'normcase', 'normpath', 'os', 'samefile', 'split', 'splitdrive', 'splitext', 'walk']
+#print "dir(os.java)",dir(os.java)    #  >>> dir(os.java) ['__name__', 'applet', 'awt', 'beans', 'io', 'lang', 'math', 'net', 'nio', 
+#'rmi', 'security', 'sql', 'text', 'util']
+#print "dir(os.javapath)",dir(os.javapath)      # >>> dir(os.javapath) ['File', 'System', '__doc__', '__file__', 
+#'__name__', 'abspath', 'basename', 'commonprefix', 'dirname', 'exists', 'expanduser', 'gethome', 'getsize', 'getuser',
+# 'isabs', 'isdir', 'isfile', 'islink', 'ismount', 'java', 'join', 'normcase', 'normpath', 'os', 'samefile', 'split', 
+#'splitdrive', 'splitext', 'walk']
 #print "os.javapath.getuser()",os.javapath.getuser() # os.javapath.getuser() >>>'wayne' looks like the same list of commands as os.path.*
 print "os.listdir()",os.listdir        # works like an ls command os.listdir("/home") 
 print "os.makedirs()",os.makedirs      # needs one argument
 print "os.mkdir()",os.mkdir            # os.mkdir("junk") worked created a dir off /home/wayne/source/Moneydance os.curdir ??
 print "os.name",os.name                  # java
 print "os.pardir",os.pardir              # ".."
-print "dir(os.path)",dir(os.path)        # >>> dir (os.path) ['File', 'System', '__doc__', '__file__', '__name__', 'abspath', 'basename', 'commonprefix', 'dirname', 'exists', 'expanduser', 'gethome', 'getsize', 'getuser', 'isabs', 'isdir', 'isfile', 'islink', 'ismount', 'java', 'join', 'normcase', 'normpath', 'os', 'samefile', 'split', 'splitdrive', 'splitext', 'walk']
+print "dir(os.path)",dir(os.path)        
+# >>> dir (os.path) ['File', 'System', '__doc__', '__file__', '__name__', 'abspath', 'basename', 'commonprefix', 
+#'dirname', 'exists', 'expanduser', 'gethome', 'getsize', 'getuser', 'isabs', 'isdir', 'isfile', 'islink', 'ismount',
+# 'java', 'join', 'normcase', 'normpath', 'os', 'samefile', 'split', 'splitdrive', 'splitext', 'walk']
 #print "os.path.gethome()",os.path.gethome() # bunch of interesting functions in os.path
 print "os.pathsep",os.pathsep            # ":"
 print "os.remove()",os.remove          # needs one argument
